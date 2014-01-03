@@ -1,0 +1,68 @@
+#!/bin/sh
+
+# tracker - Trackes a given url and, if it's changed since the last visit
+# sends a text using twilio reporting the change
+# Note: may have to 'brew install lynx' for Mac OS X
+. /Users/nickt/Desktop/seatsniper/alert.sh
+
+sitearchive="/usr/tmp/siteTracker"	#change as desired
+message=""
+
+if [ $# -ne 1 ] ; then
+	echo "Usage: $(basename $0) url" >&2
+	exit 1
+fi
+
+if [ ! -d $sitearchive ] ; then
+	if ! mkdir $sitearchive ; then
+		echo "$(basename $0) failed: Couldn't create $sitearchive" >&2
+		exit 1
+	fi
+	chmod 777 $sitearchive		#change this for any optional privacy
+fi
+
+if [ "$(echo $1 | cut -c1-5)" != "http:" ] ; then
+	if [ "$(echo $1 | cut -c1-6)" != "https:" ] ; then
+		echo "Please use fully qualified URLs (e.g., start with 'http://')" >&2
+		exit 1
+	fi
+fi
+
+fname="$(echo "$1" | sed 's/http:\/\///g' | tr '/?&' '...')" #take out unallowed characted in unix filenames
+#and substitute periods
+
+baseurl="$(echo "$1" | cut -d/ -f1-3)/"
+#echo baseurl is $baseurl
+
+#grab a copy of the webpage into an archive file. Note that we can 
+# track changes by looking at just content (-dump not -source) so we can skip any html parsing
+
+/usr/local/bin/lynx -dump "$1" | uniq > $sitearchive/${fname}.new
+
+if [ -f $sitearchive/$fname ] ; then
+	#we've seen this site before, so compare with 'diff'
+	#echo "seen it before checking"
+	if   diff $sitearchive/$fname $sitearchive/${fname}.new > /dev/null ; then
+		rm -f $sitearchive/${fname}.new		#nothing new to save
+		exit 0
+	fi
+fi
+
+# For the script to make it this far, the site must have changed, or be a new 
+# site to watch. We need to alert someone and replace the old file with the changed 
+# one for the next invocation of the script
+
+message="Site $1 has changed"   #change this later to incorporate html parsing and send
+#details of the change, can use output of the diff message, currently sent to /dev/null
+sendText "$message" &> /dev/null 
+
+
+#update the snapshot of website
+
+mv $sitearchive/${fname}.new $sitearchive/$fname
+chmod 777 $sitearchive/$fname
+
+exit 0
+
+
+ 
