@@ -11,7 +11,7 @@ Setup
 -------
 ###Main Program
 You have to use fully qualified paths for the executables that are not 
-included in you PATH variable.
+included in you PATH variable. These aren't necessary if running manually from the root directory of the project, but the script isn't practical unless run from a cronjob, so absolute paths are a good idea when in doubt.
 Open up tracker and change the lines marked #change (lines 6,7,8)
 
 The first line sources the *alert.sh* script, importing those functions listed inside, in this case, it is the sendText function we are interested in. You have to make this alert.sh file, see alertExample.sh for a template. 
