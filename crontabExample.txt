@@ -1,5 +1,6 @@
 PATH=/usr/local/bin:/bin:/usr/sbin:/sbin:/usr/bin:/usr/local/git/bin
 
+
 #website tracking
 0-59 * * * * ~/Documents/Completed\ Work/seatsniper/tracker 'nickteissler.com'
 
