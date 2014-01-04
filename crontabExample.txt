@@ -1,0 +1,8 @@
+PATH=/usr/local/bin:/bin:/usr/sbin:/sbin:/usr/bin:/usr/local/git/bin
+
+#website tracking
+0-59 * * * * ~/Documents/Completed\ Work/seatsniper/tracker 'https://oscar.gatech.edu/pls/bprod/bwckschd.p_disp_detail_sched?term_in=201402&crn_in=20792'
+
+#demo say command
+#0-59/5 * * * * say "The minute time is divisble by 5" 
+#uncomment for this to work
