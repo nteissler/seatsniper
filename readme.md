@@ -3,9 +3,9 @@ seatsniper
 
 Requirements
 --------
-• Unix/Linux
-• lynx (May have to install, with homebrew it is: brew install lynx)
-• Twilio Accounts, sendmail, or other form of notification
+• Unix/Linux  
+• lynx (May have to install, with homebrew it is: brew install lynx)  
+• Twilio Accounts, sendmail, or other form of notification  
 
 Setup
 -------
@@ -27,18 +27,18 @@ Your program can send you text messages using the services of Twilio, with a tri
 
 Usage
 ----
-From root directory of seatsniper
+From root directory of seatsniper  
 <code>$ ./tracker 'https://youwebsitehere'</code>
 The single quotes aren't necessary for all sites, but a required for some depending on the special characters in the URL
 
 ###Running from a crontab
-To run the program in a crontab every minute
-<code>$ cd ~
-	  $ touch crontab.txt</code>
-Edit crontab.txt in any editor to include the line (see crontabExample.txt for more options)
-<code>0-59 * * * * /path/to/tracker http://yourwebsite.com</code>
-Save the text file and then back in terminal run 
-<code>crontab ~/crontab.txt</code>
+To run the program in a crontab every minute  
+<code>$ cd ~  
+	  $ touch crontab.txt</code>  
+Edit crontab.txt in any editor to include the line (see crontabExample.txt for more options)  
+<code>0-59 * * * * /path/to/tracker http://yourwebsite.com</code>  
+Save the text file and then back in terminal run   
+<code>crontab ~/crontab.txt</code>  
 You should receive some feedback that the cronjob has been installed and is running every minute
 
 
