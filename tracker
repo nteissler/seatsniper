@@ -27,15 +27,17 @@ if [ "$(echo $1 | cut -c1-5)" != "http:" ] ; then
 	fi
 fi
 
-fname="$(echo "$1" | sed 's/http:\/\///g' | tr '/?&' '...')" #take out unallowed characted in unix filenames
-#and substitute periods
+fname="$(echo "$1" | sed 's/http\(s\)\{0,1\}:\/\///g' | tr '/?&' '...')" 
+#take out unallowed characted in unix filenames
+#also strip http or https
+
 
 baseurl="$(echo "$1" | cut -d/ -f1-3)/"
 
 #grab a copy of the webpage into an archive file. Note that we can 
 # track changes by looking at just content (-dump not -source) so we can skip any html parsing
 
-lynx -dump "$1" | uniq > $sitearchive/${fname}.new
+lynx -dump ${1} | uniq > $sitearchive/"${fname}".new
 
 if [ -f $sitearchive/$fname ] ; then
 	#we've seen this site before, so compare with 'diff'
@@ -50,14 +52,13 @@ fi
 # site to watch. We need to alert someone and replace the old file with the changed 
 # one for the next invocation of the script
 
-message="$(expr "$1" : '.*\([0-9]\{5\}\)')"
-echo message is $message
+message="${1} has changed"
 sendText "$message" &> /dev/null 
 
 
 #update the snapshot of website
 
-mv $sitearchive/${fname}.new $sitearchive/$fname
+mv $sitearchive/"${fname}".new $sitearchive/"${fname}"
 chmod 777 $sitearchive/$fname
 
 exit 0
