@@ -50,7 +50,8 @@ fi
 # site to watch. We need to alert someone and replace the old file with the changed 
 # one for the next invocation of the script
 
-message="Site $baseurl has changed"  
+message="$(expr "$1" : '.*\([0-9]\{5\}\)')"
+echo message is $message
 sendText "$message" &> /dev/null 
 
 
